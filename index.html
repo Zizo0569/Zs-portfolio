@@ -836,39 +836,39 @@
          dans chaque .gallery-item
          ════════════════════════════════════════════ -->
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder"><i class="fas fa-image"></i><span><img src="eminem.jpeg" alt="Titre"></span></div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — EMINEM</span></div>
-    </div>
+  <img src="eminem.jpeg" alt="Portrait EMINEM">
+  <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — EMINEM</span></div>
+</div>
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:3/5"><i class="fas fa-image"></i><span><img src="joker.jpeg" alt="Titre"></span></div>
-      <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — JOKER</span></div>
+    <img src="joker.jpeg" alt="Titre">
+    <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — JOKER</span></div>
     </div>
     <div class="gallery-item" data-category="illustration" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:4/5"><i class="fas fa-image"></i><span><img src="wydad.jpeg" alt="Titre"></span></div>
+      <img src="wydad.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">ULTRAS</span></div>
     </div>
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:3/4"><i class="fas fa-image"></i><span><img src="king2.jpeg" alt="Titre"></span></div>
+      <img src="king2.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — KING HASSSAN 2 </span></div>
     </div>
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder"><i class="fas fa-image"></i><img src="7dealy.jpeg" alt="Titre"></div>
+      <img src="7dealy.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">ANIME</span></div>
     </div>
     <div class="gallery-item" data-category="illustration" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:4/3"><i class="fas fa-image"></i><span><img src="redone.jpeg" alt="Titre"></span></div>
+      <img src="redone.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">ANIME 2</span></div>
     </div>
     <div class="gallery-item" data-category="manga" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:3/5"><i class="fas fa-image"></i><span><img src="anime.jpeg" alt="Titre"></span></div>
+      <img src="anime.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">Manga — 3</span></div>
     </div>
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder" style="aspect-ratio:3/4"><i class="fas fa-image"></i><span><img src="desginzs.jpeg" alt="Titre"></span></div>
+      <img src="desginzs.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">DESIGN ZS</span></div>
     </div>
     <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
-      <div class="gallery-placeholder"><i class="fas fa-image"></i><span><img src="deadjoker.jpeg" alt="Titre"></span></div>
+      <img src="deadjoker.jpeg" alt="Titre">
       <div class="gallery-overlay"><span class="gallery-overlay-text">joker</span></div>
     </div>
   </div>
@@ -921,22 +921,21 @@
       <p style="color:var(--text-dim);margin-top:12px;font-size:.9rem">Vous pouvez me contacter ici.</p>
       <div class="section-rule"></div>
     </div>
-    <div class="contact-form reveal">
+    <form action="https://formspree.io/f/mblaqpgo" method="POST" class="contact-form reveal">
       <div class="form-group">
         <label>Nom</label>
-        <input type="text" id="fname" placeholder="Votre nom" autocomplete="name">
+        <input type="text" id="fname" name="name" placeholder="Votre nom" autocomplete="name" required>
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="femail" placeholder="Votre email" autocomplete="email">
+        <input type="email" id="femail" name="email" placeholder="Votre email" autocomplete="email" required>
       </div>
       <div class="form-group">
         <label>Message</label>
-        <textarea id="fmessage" placeholder="Votre message..."></textarea>
+        <textarea id="fmessage" name="message" placeholder="Votre message..." required></textarea>
       </div>
-      <button class="submit-btn" onclick="submitForm()">Envoyer</button>
-      <p class="form-msg" id="formMsg"></p>
-    </div>
+      <button type="submit" class="submit-btn">Envoyer</button>
+    </form>
   </div>
 </section>
 
