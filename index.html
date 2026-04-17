@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZIZOART. — Habla Zidane</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,600&family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --crimson: #8B0000;
+      --crimson-light: #A31515;
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --text: #f0ece4;
+      --text-dim: #b0a898;
+      --border: rgba(201,168,76,0.25);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.18s cubic-bezier(0.23, 1, 0.32, 1);
+      opacity: 0.7;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      height: 68px;
+      background: var(--crimson);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      transition: background 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(139,0,0,0.97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 40px rgba(0,0,0,0.6);
+    }
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--text);
+      letter-spacing: 2px;
+      text-decoration: none;
+      position: relative;
+    }
+    .nav-logo span { color: var(--gold); }
+
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 8px;
+    }
+    .hamburger span {
+      width: 26px; height: 2px;
+      background: var(--text);
+      display: block;
+      transition: all 0.3s;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .art-zone-btn {
+      background: var(--crimson-light);
+      color: var(--text);
+      border: 1.5px solid var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      padding: 10px 22px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .art-zone-btn:hover {
+      background: var(--gold);
+      color: var(--black);
+      box-shadow: 0 0 20px rgba(201,168,76,0.4);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed; top: 68px; left: 0; right: 0; bottom: 0;
+      background: rgba(10,0,0,0.97);
+      backdrop-filter: blur(16px);
+      z-index: 999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 36px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 4px;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .mobile-menu a::after {
+      content: '';
+      position: absolute; bottom: -6px; left: 0; right: 0;
+      height: 1px; background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu a:hover::after { transform: scaleX(1); }
+
+    /* ─── HERO ─── */
+    #hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('photo_bg_hero.jpg'); /* replace */
+      background-size: cover; background-position: center;
+      filter: sepia(0.3) brightness(0.5);
+      transform: scale(1.08);
+      transition: transform 12s ease-out;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(139,0,0,0.4) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.85) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; gap: 80px;
+      max-width: 1100px; width: 100%; padding: 0 40px;
+    }
+    .hero-frame-wrap {
+      flex-shrink: 0;
+      position: relative;
+    }
+    .hero-frame {
+      width: 300px; height: 380px;
+      border: 12px solid var(--gold);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 60px rgba(139,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.4);
+      animation: frameFloat 6s ease-in-out infinite;
+    }
+    .hero-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: sepia(0.4) contrast(1.1);
+    }
+    .hero-frame-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #2a1a0a, #4a2010);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--gold); font-family: 'Cinzel', serif;
+      font-size: 0.8rem; letter-spacing: 2px; text-align: center;
+      gap: 12px;
+    }
+    .hero-frame-placeholder i { font-size: 2.5rem; opacity: 0.5; }
+    .frame-ornament {
+      position: absolute;
+      width: 20px; height: 20px;
+      border: 2px solid var(--gold-light);
+    }
+    .frame-ornament.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+    .frame-ornament.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
+    .frame-ornament.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
+    .frame-ornament.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+
+    @keyframes frameFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-8px) rotate(0.5deg); }
+      66% { transform: translateY(4px) rotate(-0.3deg); }
+    }
+
+    .hero-text { flex: 1; }
+    .hero-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-name {
+      font-family: 'Cinzel', serif;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .hero-name .line1 {
+      display: block; font-size: 3.8rem; font-weight: 400;
+      color: var(--text); letter-spacing: 3px;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+    }
+    .hero-name .line2 {
+      display: block; font-size: 3.8rem; font-weight: 900;
+      color: var(--crimson-light); letter-spacing: 3px;
+      opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+    }
+    .hero-divider {
+      width: 80px; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 22px 0;
+      opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+    }
+    .hero-desc {
+      font-size: 0.95rem; line-height: 1.8;
+      color: var(--text-dim); max-width: 380px;
+      opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
+    }
+    .hero-socials {
+      display: flex; gap: 18px; margin-top: 28px;
+      opacity: 0; animation: fadeUp 0.8s 1.3s forwards;
+    }
+    .hero-socials a {
+      width: 40px; height: 40px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim);
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .hero-socials a:hover {
+      background: var(--gold); color: var(--black);
+      border-color: var(--gold);
+      transform: translateY(-3px);
+    }
+    .scroll-indicator {
+      position: absolute; bottom: 30px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeUp 0.8s 1.8s forwards;
+    }
+    .scroll-indicator span {
+      font-size: 0.6rem; letter-spacing: 3px;
+      color: var(--text-dim); text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { transform: scaleY(0); transform-origin: top; }
+      50% { transform: scaleY(1); transform-origin: top; }
+      50.01% { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section { padding: 100px 40px; }
+    .section-header {
+      text-align: center; margin-bottom: 60px;
+    }
+    .section-kicker {
+      font-size: 0.65rem; letter-spacing: 5px;
+      color: var(--gold); text-transform: uppercase;
+      display: block; margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.6rem; font-weight: 400;
+      color: var(--text); letter-spacing: 2px;
+    }
+    .section-rule {
+      width: 60px; height: 1px;
+      background: var(--gold);
+      margin: 18px auto 0;
+    }
+
+    /* ─── ABOUT ─── */
+    #about { background: var(--dark); }
+    .about-grid {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+      align-items: center;
+    }
+    .about-img {
+      position: relative;
+    }
+    .about-img-inner {
+      width: 100%; aspect-ratio: 3/4;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+    .about-img-inner img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(20%);
+      transition: filter 0.4s, transform 0.6s;
+    }
+    .about-img-inner:hover img { filter: grayscale(0); transform: scale(1.03); }
+    .about-img-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, #1a0a0a, #2a1010);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.75rem;
+      letter-spacing: 2px; gap: 10px;
+    }
+    .about-img-placeholder i { font-size: 3rem; opacity: 0.4; }
+    .about-tag {
+      position: absolute; bottom: -16px; right: -16px;
+      background: var(--crimson);
+      border: 1px solid var(--gold);
+      padding: 14px 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem; letter-spacing: 2px;
+    }
+    .about-tag strong { display: block; font-size: 1.4rem; color: var(--gold); }
+    .about-text h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.6rem; font-weight: 400;
+      margin-bottom: 20px; color: var(--text);
+    }
+    .about-text p {
+      color: var(--text-dim); line-height: 1.9;
+      font-size: 0.95rem; margin-bottom: 14px;
+    }
+    .about-skills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .skill-tag {
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      font-size: 0.7rem; letter-spacing: 2px;
+      color: var(--gold); text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .skill-tag:hover { background: var(--gold); color: var(--black); }
+
+    /* ─── ARTWORKS ─── */
+    #artworks { background: var(--black); }
+    .gallery-filters {
+      display: flex; justify-content: center; gap: 14px;
+      margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text-dim); padding: 8px 20px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--gold); color: var(--black);
+      border-color: var(--gold);
+    }
+    .gallery-grid {
+      columns: 3; column-gap: 16px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 16px;
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .gallery-item:hover { border-color: var(--gold); }
+    .gallery-item img {
+      width: 100%; display: block;
+      transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
+      filter: grayscale(10%);
+    }
+    .gallery-item:hover img { transform: scale(1.04); filter: grayscale(0); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(139,0,0,0.85), transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic; color: var(--text);
+    }
+    /* placeholder cards */
+    .gallery-placeholder {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a0a0a, #100808);
+      border: 1px dashed rgba(201,168,76,0.2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: rgba(201,168,76,0.3);
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem; letter-spacing: 2px; gap: 12px;
+    }
+    .gallery-placeholder i { font-size: 2rem; }
+
+    /* ─── LIGHTBOX ─── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.94);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img {
+      max-width: 85vw; max-height: 85vh;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+    .lightbox-close {
+      position: absolute; top: 24px; right: 32px;
+      font-size: 2rem; color: var(--text-dim);
+      cursor: pointer; background: none; border: none;
+      transition: color 0.2s;
+    }
+    .lightbox-close:hover { color: var(--gold); }
+
+    /* ─── AI ASSISTANT ─── */
+    #assistant-zone {
+      background: var(--dark);
+      position: relative; overflow: hidden;
+    }
+    #assistant-zone::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(139,0,0,0.2), transparent 70%);
+      pointer-events: none;
+    }
+    .assistant-container {
+      max-width: 900px; margin: 0 auto; position: relative;
+    }
+    .assistant-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--crimson);
+      padding: 6px 16px;
+      font-size: 0.65rem; letter-spacing: 3px;
+      color: var(--crimson-light); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .assistant-badge i { font-size: 0.6rem; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .chat-window {
+      background: rgba(10,0,0,0.7);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .chat-header {
+      background: var(--crimson);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chat-header .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .dot.green { background: #4ade80; animation: pulse 2s infinite; }
+    .dot.yellow { background: #fbbf24; }
+    .dot.red { background: #f87171; }
+    .chat-header-title {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem; letter-spacing: 2px;
+      margin-left: 8px; color: var(--text);
+    }
+    .chat-messages {
+      height: 360px; overflow-y: auto;
+      padding: 24px; display: flex; flex-direction: column; gap: 16px;
+      scrollbar-width: thin; scrollbar-color: var(--crimson) transparent;
+    }
+    .chat-messages::-webkit-scrollbar { width: 3px; }
+    .chat-messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-messages::-webkit-scrollbar-thumb { background: var(--crimson); }
+    .msg {
+      max-width: 75%; padding: 12px 16px;
+      font-size: 0.88rem; line-height: 1.6;
+      animation: msgIn 0.3s ease-out;
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg.user {
+      background: var(--crimson);
+      color: var(--text);
+      align-self: flex-end;
+      border-radius: 2px 2px 0 2px;
+    }
+    .msg.assistant {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      color: var(--text);
+      align-self: flex-start;
+      border-radius: 2px 2px 2px 0;
+    }
+    .msg.assistant .msg-sender {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem; letter-spacing: 2px;
+      color: var(--gold); display: block; margin-bottom: 6px;
+    }
+    .typing-indicator {
+      display: flex; gap: 5px; padding: 12px 16px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      align-self: flex-start;
+      border-radius: 2px 2px 2px 0;
+    }
+    .typing-indicator span {
+      width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+      animation: typingDot 1.2s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingDot {
+      0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+    .chat-input-row {
+      display: flex; border-top: 1px solid var(--border);
+    }
+    .chat-input {
+      flex: 1; background: transparent;
+      border: none; outline: none;
+      padding: 16px 20px;
+      color: var(--text); font-family: 'Raleway', sans-serif;
+      font-size: 0.88rem;
+    }
+    .chat-input::placeholder { color: var(--text-dim); }
+    .chat-send-btn {
+      padding: 0 24px;
+      background: var(--crimson);
+      border: none; cursor: pointer;
+      color: var(--text); font-size: 1rem;
+      transition: background 0.3s;
+    }
+    .chat-send-btn:hover { background: var(--gold); color: var(--black); }
+    .assistant-note {
+      margin-top: 16px; text-align: center;
+      font-size: 0.72rem; color: var(--text-dim); letter-spacing: 1px;
+    }
+    .assistant-note a { color: var(--gold); text-decoration: none; }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      background: var(--black);
+      position: relative; overflow: hidden;
+    }
+    .contact-bg {
+      position: absolute; inset: 0;
+      background-image: url('photo_bg_contact.jpg');
+      background-size: cover; background-position: center;
+      filter: brightness(0.2) sepia(0.4);
+    }
+    .contact-inner {
+      position: relative; z-index: 1;
+      max-width: 680px; margin: 0 auto;
+    }
+    .contact-form {
+      background: rgba(10,0,0,0.82);
+      border: 1px solid var(--border);
+      padding: 48px;
+      backdrop-filter: blur(10px);
+    }
+    .form-group { margin-bottom: 24px; }
+    .form-group label {
+      display: block;
+      font-size: 0.72rem; letter-spacing: 3px;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--text); padding: 14px 16px;
+      font-family: 'Raleway', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.03);
+    }
+    .form-group textarea { min-height: 130px; }
+    .submit-btn {
+      background: var(--crimson); color: var(--text);
+      border: 1.5px solid var(--gold);
+      padding: 15px 40px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem; letter-spacing: 3px;
+      cursor: pointer; text-transform: uppercase;
+      transition: all 0.3s; width: 100%;
+    }
+    .submit-btn:hover {
+      background: var(--gold); color: var(--black);
+      box-shadow: 0 0 30px rgba(201,168,76,0.3);
+    }
+    .form-msg {
+      margin-top: 14px; text-align: center;
+      font-size: 0.82rem;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .form-msg.show { opacity: 1; }
+    .form-msg.success { color: #4ade80; }
+    .form-msg.error { color: #f87171; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--crimson);
+      padding: 50px 40px;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem; font-weight: 700;
+      letter-spacing: 3px; color: var(--text);
+      margin-bottom: 10px;
+    }
+    .footer-logo span { color: var(--gold); }
+    .footer-email {
+      font-size: 0.82rem; color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+    .footer-socials { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; }
+    .footer-socials a {
+      width: 38px; height: 38px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim); text-decoration: none;
+      transition: all 0.3s;
+    }
+    .footer-socials a:hover {
+      border-color: var(--gold); color: var(--gold);
+      background: rgba(201,168,76,0.1);
+    }
+    .footer-copy { font-size: 0.7rem; color: rgba(176,168,152,0.5); letter-spacing: 2px; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .hero-content { flex-direction: column; gap: 40px; text-align: center; }
+      .hero-frame { width: 220px; height: 280px; }
+      .hero-name .line1, .hero-name .line2 { font-size: 2.6rem; }
+      .hero-desc { margin: 0 auto; }
+      .hero-socials { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; }
+      .gallery-grid { columns: 2; }
+      .contact-form { padding: 28px; }
+    }
+    @media (max-width: 560px) {
+      nav { padding: 0 20px; }
+      section { padding: 70px 20px; }
+      .gallery-grid { columns: 1; }
+      .hero-name .line1, .hero-name .line2 { font-size: 2rem; }
+    }
+
+    /* ─── REVEAL ANIMATION ─── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Nav -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">ZIZO<span>ART.</span></a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#assistant-zone" class="art-zone-btn">ART ZONE</a>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero" onclick="toggleMenu()">Accueil</a>
+  <a href="#about" onclick="toggleMenu()">À propos</a>
+  <a href="#artworks" onclick="toggleMenu()">Œuvres</a>
+  <a href="#assistant-zone" onclick="toggleMenu()">AI Zone</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-frame-wrap">
+      <div class="hero-frame">
+        <!-- REPLACE: <img src="photo1.jpg" alt="Habla Zidane"> -->
+        <div class="hero-frame-placeholder">
+          <i class="fas fa-image"></i>
+          <span> <img src="ai portrait.png" alt="Habla Zidane"></span>
+        </div>
+        <div class="frame-ornament tl"></div>
+        <div class="frame-ornament tr"></div>
+        <div class="frame-ornament bl"></div>
+        <div class="frame-ornament br"></div>
+      </div>
+    </div>
+    <div class="hero-text">
+      <p class="hero-label">Artist · Developer · Creator</p>
+      <h1 class="hero-name">
+        <span class="line1">HABLA</span>
+        <span class="line2">ZIDANE</span>
+      </h1>
+      <div class="hero-divider"></div>
+      <p class="hero-desc">
+        Artiste visuel & développeur passionné. Je crée des portraits au fusain, des illustrations numériques et des expériences web immersives.
+      </p>
+      <div class="hero-socials">
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="section-header reveal">
+    <span class="section-kicker">Qui suis-je</span>
+    <h2 class="section-title">À Propos</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-img reveal">
+      <div class="about-img-inner">
+        <!-- REPLACE: <img src="photo2.jpg" alt="About"> -->
+        <div class="about-img-placeholder">
+          <i class="fas fa-user"></i>
+          <span><img src="art.jpeg" alt="About"></span>
+        </div>
+      </div>
+      <div class="about-tag">
+        <strong>+50</strong>
+        Œuvres créées
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <h3>Artiste & Développeur</h3>
+      <p>
+        Passionné par l'art depuis toujours, je combine le dessin traditionnel au fusain et au crayon avec le développement web moderne pour créer des expériences uniques.
+      </p>
+      <p>
+        De Marrakech, mes inspirations vont du réalisme classique aux mangas japonais, en passant par les grandes fresques de la Renaissance.
+      </p>
+      <div class="about-skills">
+        <span class="skill-tag">Fusain</span>
+        <span class="skill-tag">Portraits</span>
+        <span class="skill-tag">Illustration</span>
+        <span class="skill-tag">Web Dev</span>
+        <span class="skill-tag">UI Design</span>
+        <span class="skill-tag">IA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ARTWORKS ─── -->
+<section id="artworks">
+  <div class="section-header reveal">
+    <span class="section-kicker">Galerie</span>
+    <h2 class="section-title">Artworks</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="gallery-filters reveal">
+    <button class="filter-btn active" data-filter="all">Tout</button>
+    <button class="filter-btn" data-filter="portrait">Portraits</button>
+    <button class="filter-btn" data-filter="manga">Manga</button>
+    <button class="filter-btn" data-filter="illustration">Illustration</button>
+  </div>
+  <div class="gallery-grid reveal" id="galleryGrid">
+    <!-- ════════════════════════════════════════════
+         REMPLACE gallery-placeholder par :
+         <img src="photo3.jpg" alt="Titre">
+         dans chaque .gallery-item
+         ════════════════════════════════════════════ -->
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder"><i class="fas fa-image"></i><span><img src="eminem.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — EMINEM</span></div>
+    </div>
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:3/5"><i class="fas fa-image"></i><span><img src="joker.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — JOKER</span></div>
+    </div>
+    <div class="gallery-item" data-category="illustration" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:4/5"><i class="fas fa-image"></i><span><img src="wydad.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">ULTRAS</span></div>
+    </div>
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:3/4"><i class="fas fa-image"></i><span><img src="king2.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Portrait — KING HASSSAN 2 </span></div>
+    </div>
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder"><i class="fas fa-image"></i><img src="7dealy.jpeg" alt="Titre"></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">ANIME</span></div>
+    </div>
+    <div class="gallery-item" data-category="illustration" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:4/3"><i class="fas fa-image"></i><span><img src="redone.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">ANIME 2</span></div>
+    </div>
+    <div class="gallery-item" data-category="manga" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:3/5"><i class="fas fa-image"></i><span><img src="anime.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Manga — 3</span></div>
+    </div>
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder" style="aspect-ratio:3/4"><i class="fas fa-image"></i><span><img src="desginzs.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">DESIGN ZS</span></div>
+    </div>
+    <div class="gallery-item" data-category="portrait" onclick="openLightbox(this)">
+      <div class="gallery-placeholder"><i class="fas fa-image"></i><span><img src="deadjoker.jpeg" alt="Titre"></span></div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">joker</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── AI ASSISTANT ─── -->
+<section id="assistant-zone">
+  <div class="section-header reveal">
+    <span class="section-kicker">Intelligence Artificielle</span>
+    <h2 class="section-title">Mon Assistant</h2>
+    <div class="section-rule"></div>
+  </div>
+  <div class="assistant-container reveal">
+    <div class="assistant-badge">
+      <i class="fas fa-circle"></i>
+      <span>Assistant connecté</span>
+    </div>
+    <div class="chat-window">
+      <div class="chat-header">
+        <div class="dot green"></div>
+        <div class="dot yellow"></div>
+        <div class="dot red"></div>
+        <span class="chat-header-title">ZIZOART — AI ASSISTANT</span>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg assistant">
+          <span class="msg-sender">ZIZOART AI</span>
+          Bonjour ! Je suis l'assistant de Habla Zidane. Posez-moi vos questions sur ses œuvres, ses commandes, ou son parcours artistique.
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Écrivez votre message..." onkeydown="if(event.key==='Enter') sendMessage()">
+        <button class="chat-send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    <p class="assistant-note">
+      Assistant local ? <a href="#" id="localLink">Connecter votre API locale</a> — 
+      ou utilise l'API Anthropic ci-dessus. <a href="ASSISTANT_GUIDE.md" download>Guide de déploiement →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-inner">
+    <div class="section-header reveal">
+      <span class="section-kicker">Me contacter</span>
+      <h2 class="section-title" style="color:#C9A84C">Contact</h2>
+      <p style="color:var(--text-dim);margin-top:12px;font-size:.9rem">Vous pouvez me contacter ici.</p>
+      <div class="section-rule"></div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" id="fname" placeholder="Votre nom" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="femail" placeholder="Votre email" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea id="fmessage" placeholder="Votre message..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">Envoyer</button>
+      <p class="form-msg" id="formMsg"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-logo">ZIZO<span>ART.</span></div>
+  <p class="footer-email">📧 zizoghs0569@gmail.com</p>
+  <div class="footer-socials">
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-github"></i></a>
+    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+  </div>
+  <p class="footer-copy">© 2026 ZIZOART. — Habla Zidane. Tous droits réservés.</p>
+</footer>
+
+<script>
+/* ── CONFIG ── */
+// Pour l'assistant, remplace par ton endpoint :
+// LOCAL  : "http://localhost:PORT/api/chat"
+// API    : utilise l'API Anthropic ci-dessous
+const ASSISTANT_MODE = "anthropic"; // "local" ou "anthropic"
+const LOCAL_URL      = "http://localhost:8000/api/chat"; // ton serveur local
+const ANTHROPIC_KEY  = ""; // Laisse vide dans le fichier, charge via prompt ou env
+
+/* ── CURSOR ── */
+const cursor     = document.getElementById("cursor");
+const cursorRing = document.getElementById("cursorRing");
+document.addEventListener("mousemove", e => {
+  cursor.style.left     = e.clientX + "px";
+  cursor.style.top      = e.clientY  + "px";
+  cursorRing.style.left = e.clientX + "px";
+  cursorRing.style.top  = e.clientY  + "px";
+});
+document.querySelectorAll("a,button,input,textarea").forEach(el => {
+  el.addEventListener("mouseenter", () => {
+    cursorRing.style.transform = "translate(-50%,-50%) scale(1.6)";
+    cursorRing.style.borderColor = "var(--gold)";
+  });
+  el.addEventListener("mouseleave", () => {
+    cursorRing.style.transform = "translate(-50%,-50%) scale(1)";
+    cursorRing.style.borderColor = "var(--gold)";
+  });
+});
+
+/* ── NAV SCROLL ── */
+const navbar = document.getElementById("navbar");
+window.addEventListener("scroll", () => {
+  navbar.classList.toggle("scrolled", window.scrollY > 50);
+});
+
+/* ── HERO BG ── */
+document.getElementById("heroBg").classList.add("loaded");
+
+/* ── MENU ── */
+function toggleMenu() {
+  const h = document.getElementById("hamburger");
+  const m = document.getElementById("mobileMenu");
+  h.classList.toggle("open");
+  m.classList.toggle("open");
+  document.body.style.overflow = m.classList.contains("open") ? "hidden" : "";
+}
+
+/* ── REVEAL ON SCROLL ── */
+const revealEls = document.querySelectorAll(".reveal");
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+revealEls.forEach(el => io.observe(el));
+
+/* ── GALLERY FILTER ── */
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const filter = btn.dataset.filter;
+    document.querySelectorAll(".gallery-item").forEach(item => {
+      const show = filter === "all" || item.dataset.category === filter;
+      item.style.transition = "opacity 0.4s, transform 0.4s";
+      item.style.opacity = show ? "1" : "0.15";
+      item.style.transform = show ? "scale(1)" : "scale(0.96)";
+      item.style.pointerEvents = show ? "auto" : "none";
+    });
+  });
+});
+
+/* ── LIGHTBOX ── */
+function openLightbox(el) {
+  const img = el.querySelector("img");
+  if (!img) return;
+  document.getElementById("lightbox-img").src = img.src;
+  document.getElementById("lightbox").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("lightbox").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeLightbox();
+});
+
+/* ── CHAT ASSISTANT ── */
+const chatMessages = document.getElementById("chatMessages");
+const chatInput    = document.getElementById("chatInput");
+
+function addMsg(text, role) {
+  const div = document.createElement("div");
+  div.className = "msg " + role;
+  if (role === "assistant") {
+    div.innerHTML = `<span class="msg-sender">ZIZOART AI</span>${escHtml(text)}`;
+  } else {
+    div.textContent = text;
+  }
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTyping() {
+  const d = document.createElement("div");
+  d.className = "typing-indicator"; d.id = "typingDot";
+  d.innerHTML = "<span></span><span></span><span></span>";
+  chatMessages.appendChild(d);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function hideTyping() {
+  const d = document.getElementById("typingDot");
+  if (d) d.remove();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+const conversationHistory = [];
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  chatInput.value = "";
+  addMsg(text, "user");
+  conversationHistory.push({ role: "user", content: text });
+  showTyping();
+
+  try {
+    let replyText = "";
+
+    if (ASSISTANT_MODE === "local") {
+      // ── LOCAL SERVER ──
+      const res = await fetch(LOCAL_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: conversationHistory })
+      });
+      if (!res.ok) throw new Error("Erreur serveur local");
+      const data = await res.json();
+      replyText = data.response || data.content || data.message || "Pas de réponse.";
+
+    } else {
+      // ── ANTHROPIC API (claude via fetch) ──
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": ANTHROPIC_KEY,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 512,
+          system: `Tu es l'assistant personnel de Habla Zidane, artiste basé à Marrakech. Tu réponds en français par défaut. Tu parles de son art (portraits au fusain, illustrations, mangas), de ses commandes, de ses prix (à discuter), et de son site ZIZOART. Sois chaleureux, artistique, et concis.`,
+          messages: conversationHistory
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err?.error?.message || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      replyText = data.content?.[0]?.text || "Pas de réponse.";
+    }
+
+    hideTyping();
+    addMsg(replyText, "assistant");
+    conversationHistory.push({ role: "assistant", content: replyText });
+
+  } catch (err) {
+    hideTyping();
+    addMsg("⚠️ " + err.message + " — Vérifiez la connexion ou la clé API.", "assistant");
+  }
+}
+
+/* ── CONTACT FORM ── */
+function submitForm() {
+  const name  = document.getElementById("fname").value.trim();
+  const email = document.getElementById("femail").value.trim();
+  const msg   = document.getElementById("fmessage").value.trim();
+  const msgEl = document.getElementById("formMsg");
+
+  if (!name || !email || !msg) {
+    msgEl.textContent = "Veuillez remplir tous les champs.";
+    msgEl.className   = "form-msg show error";
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msgEl.textContent = "Adresse email invalide.";
+    msgEl.className   = "form-msg show error";
+    return;
+  }
+  // Ici tu peux brancher EmailJS, Formspree, ou ton backend
+  msgEl.textContent = "✓ Message envoyé avec succès !";
+  msgEl.className   = "form-msg show success";
+  document.getElementById("fname").value    = "";
+  document.getElementById("femail").value   = "";
+  document.getElementById("fmessage").value = "";
+  setTimeout(() => { msgEl.classList.remove("show"); }, 4000);
+}
+</script>
+</body>
+</html>
