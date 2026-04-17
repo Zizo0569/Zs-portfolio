@@ -703,6 +703,29 @@
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+
+    /* Style des suggestions */
+.chat-suggestions {
+  display: flex; gap: 8px; padding: 10px 20px;
+  background: rgba(0,0,0,0.3); overflow-x: auto;
+}
+.chat-suggestions button {
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold); padding: 5px 12px; border-radius: 20px;
+  font-size: 0.75rem; cursor: pointer; white-space: nowrap;
+  transition: all 0.3s;
+}
+.chat-suggestions button:hover {
+  background: var(--gold); color: var(--black);
+}
+
+/* Bouton Upload */
+.chat-upload-btn {
+  padding: 0 15px; display: flex; align-items: center;
+  color: var(--text-dim); cursor: pointer; transition: color 0.3s;
+}
+.chat-upload-btn:hover { color: var(--gold); }
   </style>
 </head>
 <body>
@@ -899,10 +922,21 @@
           Bonjour ! Je suis l'assistant de Habla Zidane. Posez-moi vos questions sur ses œuvres, ses commandes, ou son parcours artistique.
         </div>
       </div>
-      <div class="chat-input-row">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Écrivez votre message..." onkeydown="if(event.key==='Enter') sendMessage()">
-        <button class="chat-send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
-      </div>
+      <div class="chat-suggestions" id="chatSuggestions">
+  <button onclick="sendSuggestion('Quels sont tes tarifs ?')">Tarifs</button>
+  <button onclick="sendSuggestion('Comment commander ?')">Commander</button>
+  <button onclick="sendSuggestion('Peux-tu dessiner sur ma veste ?')">Customisation</button>
+</div>
+
+<div class="chat-input-row">
+  <label for="client-file" class="chat-upload-btn">
+    <i class="fas fa-camera"></i>
+    <input type="file" id="client-file" hidden onchange="handleFileUpload(this)">
+  </label>
+  
+  <input type="text" class="chat-input" id="chatInput" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter') sendMessage()">
+  <button class="chat-send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+</div>
     </div>
     <p class="assistant-note">
       Assistant local ? <a href="#" id="localLink">Connecter votre API locale</a> — 
@@ -1128,6 +1162,43 @@ function submitForm() {
   document.getElementById("femail").value   = "";
   document.getElementById("fmessage").value = "";
   setTimeout(() => { msgEl.classList.remove("show"); }, 4000);
+}
+
+
+
+
+
+
+
+
+
+
+// Fonction pour les suggestions
+function sendSuggestion(text) {
+  document.getElementById("chatInput").value = text;
+  sendMessage();
+}
+
+// Fonction pour l'upload de photo vers ton serveur Hugging Face
+async function handleFileUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  
+  addMsg(`📎 Envoi de la photo : ${file.name}...`, "user");
+  
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch("https://zizo0569-zs-assistant.hf.space/client-upload", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+    addMsg("✅ Photo reçue ! Zidane va l'analyser pour vous répondre.", "assistant");
+  } catch (err) {
+    addMsg("❌ Erreur lors de l'envoi de la photo.", "assistant");
+  }
 }
 </script>
 </body>
