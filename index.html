@@ -956,8 +956,11 @@
 // Pour l'assistant, remplace par ton endpoint :
 // LOCAL  : "http://localhost:PORT/api/chat"
 // API    : utilise l'API Anthropic ci-dessous
-const ASSISTANT_MODE = "anthropic"; // "local" ou "anthropic"
-const LOCAL_URL      = "http://localhost:8000/api/chat"; // ton serveur local
+/* ── CONFIG ── */
+const ASSISTANT_MODE = "local"; 
+// On met l'URL publique de ton Hugging Face (Vérifie bien si ta route est /chat, /api/chat, etc. selon ton main.py)
+const LOCAL_URL      = "https://zizo0569-zs-assistant.hf.space/chat"; 
+
 const ANTHROPIC_KEY  = ""; // Laisse vide dans le fichier, charge via prompt ou env
 
 /* ── CURSOR ── */
